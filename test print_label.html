@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="BrowserPrint-3.0.216.min.js"></script>
+  <script type="text/javascript" src="BrowserPrint-Zebra-1.0.216.min.js"></script>
+</head>
+<body>
+  <button id="printBtn" style="font-size:24px; padding:15px 30px;">Test Print</button>
+  <div id="status" style="font-size:20px; margin-top:20px;"></div>
+
+  <script>
+    document.getElementById("printBtn").addEventListener("click", function() {
+      var zpl = "^XA\n^PW800\n^LL800\n^FO40,300\n^A0N,60,60\n^FDTEST PRINT^FS\n^XZ";
+
+      BrowserPrint.getDefaultDevice("printer", function(device) {
+        document.getElementById("status").innerText = "Printer found: " + device.name;
+        device.send(zpl, function() {
+          document.getElementById("status").innerText = "Sent to " + device.name;
+        }, function(error) {
+          document.getElementById("status").innerText = "Send error: " + error;
+        });
+      }, function(error) {
+        document.getElementById("status").innerText = "No printer found: " + error;
+      });
+    });
+  </script>
+</body>
+</html>
